@@ -29,7 +29,7 @@ public class WagonService {
         if (dto.getName().isBlank()) throw new NullPointerException();
         if (repository.existsByName(dto.getName().toUpperCase(Locale.ROOT)))
             return ResponseEntity.badRequest().body("this name already exist");
-        Wagon mainWagon = repository.findByMain(true);
+        Wagon mainWagon = repository.findByMainTrue();
         mainWagon.setMain(false);
         repository.save(mainWagon);
         Wagon wagon = new Wagon();

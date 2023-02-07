@@ -23,6 +23,6 @@ public class Wagon {
     @Column(unique = true, nullable = false)
     private String name;
 
-    private boolean isMain;
-    private boolean isArchive = false;
+    private boolean main;
+    private boolean archive = false;
 }
