@@ -1,4 +1,4 @@
-package uz.logistics.dto;
+package uz.logistics.dto.wagon;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

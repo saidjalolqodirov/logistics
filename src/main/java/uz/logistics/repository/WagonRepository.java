@@ -9,4 +9,5 @@ import uz.logistics.entity.Wagon;
 public interface WagonRepository extends CrudRepository<Wagon, Integer> {
     boolean existsByName(String name);
 
+    Wagon findByMain(boolean b);
 }

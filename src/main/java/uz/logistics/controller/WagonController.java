@@ -1,10 +1,10 @@
 package uz.logistics.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uz.logistics.dto.WagonCreateDTO;
+import uz.logistics.dto.wagon.WagonCreateDTO;
+import uz.logistics.dto.wagon.WagonUpdateDTO;
 import uz.logistics.service.WagonService;
 
 /**
@@ -25,5 +25,10 @@ public class WagonController {
     @GetMapping("/getAll")
     private ResponseEntity<?> getAll(@RequestParam(name = "page", defaultValue = "0") Integer page, @RequestParam(name = "size", defaultValue = "10") Integer size) {
         return service.getAll(page, size);
+    }
+
+    @PutMapping("/update")
+    private ResponseEntity<?> update(@RequestBody WagonUpdateDTO wagonUpdateDTO) {
+        return service.update(wagonUpdateDTO);
     }
 }
