@@ -6,7 +6,7 @@ import uz.logistics.entity.Wagon;
 /**
  * @author: Saidjalol Qodirov 2/2/2023 8:29 AM
  */
-public interface WagonRepository extends CrudRepository<Wagon, Integer> {
+public interface WagonRepository extends CrudRepository<Wagon, Long> {
     boolean existsByName(String name);
     Wagon findByMainTrue();
 }

@@ -1,4 +1,4 @@
-package uz.logistics.dto;
+package uz.logistics.dto.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,5 +24,5 @@ public class ProductCreateDTO {
 
     private boolean paid = false;
 
-    private Integer wagonId;
+    private Long wagonId;
 }

@@ -15,7 +15,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WagonUpdateDTO {
-    private Integer id;
+    private Long id;
     @NotBlank
     private String name;
 

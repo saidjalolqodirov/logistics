@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import uz.logistics.criteria.ResponsePage;
 import uz.logistics.dto.wagon.WagonCreateDTO;
 import uz.logistics.dto.wagon.WagonUpdateDTO;
 import uz.logistics.entity.Wagon;
+import uz.logistics.repository.ProductRepository;
 import uz.logistics.repository.WagonRepository;
 
 import java.util.Comparator;
@@ -25,25 +25,27 @@ public class WagonService {
 
     private final WagonRepository repository;
 
+    private final ProductRepository productRepository;
+
     public ResponseEntity<?> create(WagonCreateDTO dto) {
         if (dto.getName().isBlank()) throw new NullPointerException();
         if (repository.existsByName(dto.getName().toUpperCase(Locale.ROOT)))
             return ResponseEntity.badRequest().body("this name already exist");
         Wagon mainWagon = repository.findByMainTrue();
-        mainWagon.setMain(false);
-        repository.save(mainWagon);
+        if (mainWagon != null) {
+            mainWagon.setMain(false);
+            repository.save(mainWagon);
+        }
         Wagon wagon = new Wagon();
         wagon.setName(dto.getName().toUpperCase());
         wagon.setMain(true);
         return ResponseEntity.ok(repository.save(wagon));
     }
 
-    public ResponseEntity<?> getAll(Integer page, Integer size) {
+    public ResponseEntity<?> getAll() {
         List<Wagon> wagons = (List<Wagon>) repository.findAll();
-        int totalCount = wagons.size();
-        List<Wagon> wagonList = wagons.stream().sorted(Comparator.comparing(Wagon::getId)).skip((long) page * size).limit((long) size).collect(Collectors.toList());
-        ResponsePage<Wagon> wagonResponsePage = ResponsePage.<Wagon>builder().content(wagonList).totalElements(totalCount).size(size).number(page).build();
-        return new ResponseEntity<>(wagonResponsePage, HttpStatus.OK);
+        List<Wagon> wagonList = wagons.stream().filter(o -> (!o.isDeleted() && !o.isArchive())).sorted(Comparator.comparing(Wagon::getId)).collect(Collectors.toList());
+        return new ResponseEntity<>(wagonList, HttpStatus.OK);
     }
 
     public ResponseEntity<?> update(WagonUpdateDTO dto) {
@@ -57,6 +59,26 @@ public class WagonService {
         if (repository.existsByName(dto.getName().toUpperCase()))
             return ResponseEntity.badRequest().body("this name already exist");
         wagon.setName(dto.getName().toUpperCase());
+        return ResponseEntity.ok(repository.save(wagon));
+    }
+
+    public ResponseEntity<?> delete(Long id) {
+        if (!productRepository.findByWagonId(id).isEmpty()) {
+            return ResponseEntity.badRequest().body("wagon no empty");
+        }
+        Optional<Wagon> optionalWagon = repository.findById(id);
+        if (optionalWagon.isEmpty()) return ResponseEntity.badRequest().body("wagon not found");
+        Wagon wagon = optionalWagon.get();
+        wagon.setDeleted(true);
+        repository.save(wagon);
+        return ResponseEntity.ok("ok");
+    }
+
+    public ResponseEntity<?> archived(Long id, boolean archived) {
+        Optional<Wagon> optionalWagon = repository.findById(id);
+        if (optionalWagon.isEmpty()) return ResponseEntity.badRequest().body("wagon not found");
+        Wagon wagon = optionalWagon.get();
+        wagon.setArchive(archived);
         return ResponseEntity.ok(repository.save(wagon));
     }
 }

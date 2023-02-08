@@ -10,19 +10,20 @@ import javax.persistence.*;
 /**
  * @author: Saidjalol Qodirov 2/2/2023 8:28 AM
  */
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class Wagon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(unique = true, nullable = false)
     private String name;
 
     private boolean main;
     private boolean archive = false;
+    private boolean deleted = false;
 }

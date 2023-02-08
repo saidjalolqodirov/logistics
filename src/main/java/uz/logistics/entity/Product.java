@@ -35,5 +35,5 @@ public class Product {
     private boolean paid = false;
 
     @Column(nullable = false)
-    private Integer wagonId;
+    private Long wagonId;
 }

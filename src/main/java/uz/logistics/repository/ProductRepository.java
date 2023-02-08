@@ -11,5 +11,5 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     boolean existsByCode(String code);
 
-    List<Product> findAllByWagonId(Integer wagonId);
+    List<Product> findByWagonId(Long id);
 }

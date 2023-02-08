@@ -3,7 +3,8 @@ package uz.logistics.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uz.logistics.dto.ProductCreateDTO;
+import uz.logistics.dto.product.ProductCreateDTO;
+import uz.logistics.dto.product.ProductUpdateDTO;
 import uz.logistics.service.ProductService;
 
 /**
@@ -22,12 +23,17 @@ public class ProductController {
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<?> getAll(@RequestParam Integer wagonId) {
+    public ResponseEntity<?> getAll(@RequestParam Long wagonId) {
         return service.getAll(wagonId);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> getAll(@PathVariable Long id ) {
+    public ResponseEntity<?> delete(@PathVariable Long id) {
         return service.deleteById(id);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> update(@RequestBody ProductUpdateDTO updateDTO) {
+        return service.update(updateDTO);
     }
 }

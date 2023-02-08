@@ -23,12 +23,27 @@ public class WagonController {
     }
 
     @GetMapping("/getAll")
-    private ResponseEntity<?> getAll(@RequestParam(name = "page", defaultValue = "0") Integer page, @RequestParam(name = "size", defaultValue = "10") Integer size) {
-        return service.getAll(page, size);
+    private ResponseEntity<?> getAll() {
+        return service.getAll();
     }
 
     @PutMapping("/update")
     private ResponseEntity<?> update(@RequestBody WagonUpdateDTO wagonUpdateDTO) {
         return service.update(wagonUpdateDTO);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    private ResponseEntity<?> delete(@PathVariable Long id) {
+        return service.delete(id);
+    }
+
+    @PutMapping("/archived/{id}")
+    private ResponseEntity<?> archived(@PathVariable Long id) {
+        return service.archived(id, true);
+    }
+
+    @PutMapping("/unArchived/{id}")
+    private ResponseEntity<?> unArchived(@PathVariable Long id) {
+        return service.archived(id, false);
     }
 }

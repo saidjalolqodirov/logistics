@@ -4,11 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import uz.logistics.dto.ProductCreateDTO;
+import uz.logistics.dto.product.ProductCreateDTO;
+import uz.logistics.dto.product.ProductUpdateDTO;
 import uz.logistics.entity.Product;
 import uz.logistics.repository.ProductRepository;
 
 import java.util.Locale;
+import java.util.Optional;
 
 /**
  * @author: Saidjalol Qodirov 2/2/2023 7:56 AM
@@ -32,12 +34,28 @@ public class ProductService {
         return new ResponseEntity<>(repository.save(product), HttpStatus.OK);
     }
 
-    public ResponseEntity<?> getAll(Integer wagonId) {
-        return new ResponseEntity<>(repository.findAllByWagonId(wagonId), HttpStatus.OK);
+    public ResponseEntity<?> getAll(Long wagonId) {
+        return new ResponseEntity<>(repository.findByWagonId(wagonId), HttpStatus.OK);
     }
 
     public ResponseEntity<?> deleteById(Long id) {
         repository.deleteById(id);
         return ResponseEntity.ok("ok");
+    }
+
+    public ResponseEntity<?> update(ProductUpdateDTO updateDTO) {
+        Optional<Product> optionalProduct = repository.findById(updateDTO.getId());
+        if (optionalProduct.isEmpty())
+            return ResponseEntity.badRequest().body("not found");
+        if (updateDTO.getCode().isBlank())
+            return ResponseEntity.badRequest().body("name is empty");
+        Product product = optionalProduct.get();
+        if (!product.getCode().equalsIgnoreCase(updateDTO.getCode())) {
+            if (repository.existsByCode(updateDTO.getCode().toUpperCase())) {
+                return ResponseEntity.badRequest().body("this code already exist");
+            }
+            product.setCode(updateDTO.getCode());
+        }
+        return ResponseEntity.ok(repository.save(product));
     }
 }
