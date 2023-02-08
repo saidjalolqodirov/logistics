@@ -48,6 +48,13 @@ public class WagonService {
         return new ResponseEntity<>(wagonList, HttpStatus.OK);
     }
 
+
+    public ResponseEntity<?> getAllNewShipment() {
+        List<Wagon> wagons = (List<Wagon>) repository.findAll();
+        List<Wagon> wagonList = wagons.stream().filter(Wagon::isNewShipment).collect(Collectors.toList());
+        return ResponseEntity.ok(wagonList);
+    }
+
     public ResponseEntity<?> update(WagonUpdateDTO dto) {
         Optional<Wagon> optionalWagon = repository.findById(dto.getId());
         if (optionalWagon.isEmpty()) return ResponseEntity.badRequest().body("wagon not found");
@@ -74,11 +81,30 @@ public class WagonService {
         return ResponseEntity.ok("ok");
     }
 
-    public ResponseEntity<?> archived(Long id, boolean archived) {
+    public ResponseEntity<?> archived(Long id) {
         Optional<Wagon> optionalWagon = repository.findById(id);
         if (optionalWagon.isEmpty()) return ResponseEntity.badRequest().body("wagon not found");
         Wagon wagon = optionalWagon.get();
-        wagon.setArchive(archived);
+        wagon.setArchive(true);
         return ResponseEntity.ok(repository.save(wagon));
     }
+
+    public ResponseEntity<?> archivedForChine(Long id) {
+        Optional<Wagon> optionalWagon = repository.findById(id);
+        if (optionalWagon.isEmpty()) return ResponseEntity.badRequest().body("wagon not found");
+        Wagon wagon = optionalWagon.get();
+        wagon.setArchivedForChine(true);
+        return ResponseEntity.ok(repository.save(wagon));
+    }
+
+    public ResponseEntity<?> acceptance(Long id) {
+        Optional<Wagon> optionalWagon = repository.findById(id);
+        if (optionalWagon.isEmpty())
+            return ResponseEntity.badRequest().body("not found");
+        Wagon wagon = optionalWagon.get();
+        wagon.setNewShipment(false);
+        repository.save(wagon);
+        return ResponseEntity.ok(repository.save(wagon));
+    }
+
 }

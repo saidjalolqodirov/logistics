@@ -25,5 +25,7 @@ public class Wagon {
 
     private boolean main;
     private boolean archive = false;
+    private boolean archivedForChine = false;
     private boolean deleted = false;
+    private boolean newShipment = true;
 }

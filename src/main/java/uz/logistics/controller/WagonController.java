@@ -22,9 +22,19 @@ public class WagonController {
         return service.create(dto);
     }
 
+    @PostMapping("/acceptance/{id}")
+    private ResponseEntity<?> acceptance(@PathVariable Long id) {
+        return service.acceptance(id);
+    }
+
     @GetMapping("/getAll")
     private ResponseEntity<?> getAll() {
         return service.getAll();
+    }
+
+    @GetMapping("/getAllNewShipment")
+    private ResponseEntity<?> getAllNewShipment() {
+        return service.getAllNewShipment();
     }
 
     @PutMapping("/update")
@@ -39,11 +49,11 @@ public class WagonController {
 
     @PutMapping("/archived/{id}")
     private ResponseEntity<?> archived(@PathVariable Long id) {
-        return service.archived(id, true);
+        return service.archived(id);
     }
 
-    @PutMapping("/unArchived/{id}")
-    private ResponseEntity<?> unArchived(@PathVariable Long id) {
-        return service.archived(id, false);
+    @PutMapping("/archivedForChine/{id}")
+    private ResponseEntity<?> archivedForChine(@PathVariable Long id) {
+        return service.archivedForChine(id);
     }
 }
