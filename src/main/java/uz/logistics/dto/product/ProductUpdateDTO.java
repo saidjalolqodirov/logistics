@@ -15,4 +15,7 @@ import lombok.Setter;
 public class ProductUpdateDTO {
     private Long id;
     private String code;
+    private float weight;
+    private float cargoPrice;
+    private float boxPrice;
 }

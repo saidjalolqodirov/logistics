@@ -1,4 +1,4 @@
-package uz.logistics.dto;
+package uz.logistics.dto.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

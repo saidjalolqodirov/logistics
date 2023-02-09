@@ -36,4 +36,9 @@ public class ProductController {
     public ResponseEntity<?> update(@RequestBody ProductUpdateDTO updateDTO) {
         return service.update(updateDTO);
     }
+
+    @PutMapping("/isPaid/{id}")
+    public ResponseEntity<?> isPaid(@PathVariable Long id) {
+        return service.isPaid(id);
+    }
 }

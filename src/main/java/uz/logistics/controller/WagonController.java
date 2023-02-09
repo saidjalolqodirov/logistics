@@ -3,7 +3,6 @@ package uz.logistics.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uz.logistics.dto.wagon.TrackCodeDTO;
 import uz.logistics.dto.wagon.WagonCreateDTO;
 import uz.logistics.dto.wagon.WagonUpdateDTO;
 import uz.logistics.service.WagonService;
@@ -23,19 +22,9 @@ public class WagonController {
         return service.create(dto);
     }
 
-    @PostMapping("/acceptance/{id}")
-    private ResponseEntity<?> acceptance(@PathVariable Long id) {
-        return service.acceptance(id);
-    }
-
     @GetMapping("/getAll")
     private ResponseEntity<?> getAll() {
         return service.getAll();
-    }
-
-    @GetMapping("/getAllNewShipment")
-    private ResponseEntity<?> getAllNewShipment() {
-        return service.getAllNewShipment();
     }
 
     @PutMapping("/update")

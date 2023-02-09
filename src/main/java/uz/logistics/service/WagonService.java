@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import uz.logistics.dto.wagon.TrackCodeDTO;
 import uz.logistics.dto.wagon.WagonCreateDTO;
 import uz.logistics.dto.wagon.WagonUpdateDTO;
 import uz.logistics.entity.Wagon;
@@ -49,13 +48,6 @@ public class WagonService {
         return new ResponseEntity<>(wagonList, HttpStatus.OK);
     }
 
-
-    public ResponseEntity<?> getAllNewShipment() {
-        List<Wagon> wagons = (List<Wagon>) repository.findAll();
-        List<Wagon> wagonList = wagons.stream().filter(Wagon::isNewShipment).collect(Collectors.toList());
-        return ResponseEntity.ok(wagonList);
-    }
-
     public ResponseEntity<?> update(WagonUpdateDTO dto) {
         Optional<Wagon> optionalWagon = repository.findById(dto.getId());
         if (optionalWagon.isEmpty()) return ResponseEntity.badRequest().body("wagon not found");
@@ -95,16 +87,6 @@ public class WagonService {
         if (optionalWagon.isEmpty()) return ResponseEntity.badRequest().body("wagon not found");
         Wagon wagon = optionalWagon.get();
         wagon.setArchivedForChine(true);
-        return ResponseEntity.ok(repository.save(wagon));
-    }
-
-    public ResponseEntity<?> acceptance(Long id) {
-        Optional<Wagon> optionalWagon = repository.findById(id);
-        if (optionalWagon.isEmpty())
-            return ResponseEntity.badRequest().body("not found");
-        Wagon wagon = optionalWagon.get();
-        wagon.setNewShipment(false);
-        repository.save(wagon);
         return ResponseEntity.ok(repository.save(wagon));
     }
 }
